@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 0cd0f92c5eaed654285b86d92484052a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - sounds: {instanceID: 0}
+  - arrow: {instanceID: 0}
+  - dying: {instanceID: 0}
+  - swordstrike: {instanceID: 0}
+  - walking: {instanceID: 0}
+  - actTargetTile: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
