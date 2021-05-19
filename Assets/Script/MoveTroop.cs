@@ -27,18 +27,12 @@ public class MoveTroop : MoveParent
             if(GameGUI.isAttack)
             {
                 FindAttackTiles();
-                //Debug.Log("Calculate path to: " + target);
-                //CalculatePath();
-                //CheckAttackMouse();
             }
             else if(GameGUI.isMove && !hasMoved)
             {
                 FindOpenTiles();
                 CheckMouse();
             }
-
-            //FindOpenTiles();
-            //CheckMouse();
         }
         else
         {

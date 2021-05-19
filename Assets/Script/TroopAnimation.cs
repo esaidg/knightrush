@@ -15,7 +15,6 @@ public class TroopAnimation : MonoBehaviour
     void Update()
     {
         checkanimation();
-        checkAttack();
     }
 
     void checkanimation()
@@ -30,15 +29,8 @@ public class TroopAnimation : MonoBehaviour
         }
     }
 
-    public void checkAttack()
+    public void attackAnimation()
     {
-        if(GetComponentInParent<MoveParent>().attacking)
-        {
-            anim.SetBool("isAttacking", true);
-        }
-        else if(!GetComponentInParent<MoveParent>().attacking)
-        {
-            anim.SetBool("isAttacking", false);
-        }
+        anim.Play("infantry_04_attack_A");
     }
 }

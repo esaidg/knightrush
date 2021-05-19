@@ -7,10 +7,14 @@ public class GameTurn : MonoBehaviour
     static Dictionary<string, List<MoveParent>> troops = new Dictionary<string, List<MoveParent>>();
     static Queue<string> turnq = new Queue<string>();
     static Queue<MoveParent> teamq = new Queue<MoveParent>();
+
+    public static int troopCount;
+    public static int enemyCount;
     // Start is called before the first frame update
     void Start()
     {
-
+        troopCount = GameObject.FindGameObjectsWithTag("Troop").Length;
+        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
     }
 
     // Update is called once per frame
@@ -31,7 +35,7 @@ public class GameTurn : MonoBehaviour
             Debug.Log(teamq.Peek() + "'s turn");
             if(teamq.Peek() == null)
             {
-                teamq.Dequeue();
+                GameTurn.finishTurn();
             }
             teamq.Peek().turnStart();
         }
@@ -59,7 +63,6 @@ public class GameTurn : MonoBehaviour
         List<MoveParent> listTeam = troops[turnq.Peek()];
         foreach(MoveParent troop in listTeam)
         {
-            //Debug.Log("adding troop " + troop + " to queue");
             teamq.Enqueue(troop);
         }
 
@@ -88,15 +91,15 @@ public class GameTurn : MonoBehaviour
     public static void checkVictory()
     {
         Debug.Log("Checking victory...");
-        if(GameObject.FindGameObjectsWithTag("Enemy").Length <= 0)
+        Debug.Log("Player count: " + troopCount);
+        Debug.Log("Enemy count: " + enemyCount);
+        if(enemyCount <= 0)
         {
             Debug.Log("Player wins!");
         }
-        else if(GameObject.FindGameObjectsWithTag("Troop").Length <=0)
+        else if(troopCount <= 0)
         {
             Debug.Log("Enemy wins !");
         }
-        //Debug.Log("Enemy count: " + GameObject.FindGameObjectsWithTag("Enemy").Length);
-        //Debug.Log("Player count: " + GameObject.FindGameObjectsWithTag("Troop").Length);
     }
 }

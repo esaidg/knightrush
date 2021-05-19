@@ -69,19 +69,16 @@ public class MoveParent : MonoBehaviour
     public void getCurrent()
     {
         currentTile = getTarget(gameObject);
-        //Debug.Log("tile is " + currentTile);
         currentTile.current = true;
     }
 
     public TileInfoScipt getTarget(GameObject target)
     {   
-        //Debug.Log("get target " + target);
         RaycastHit hit;
         TileInfoScipt tile = null;
         Debug.DrawRay(target.transform.position, -Vector3.up, Color.black, 1);
         if(Physics.Raycast(target.transform.position, -Vector3.up, out hit, 1))
         {
-            //Debug.Log("tile" + tile);
             tile = hit.collider.GetComponent<TileInfoScipt>();
         }
         return tile;
@@ -193,7 +190,6 @@ public class MoveParent : MonoBehaviour
             Debug.Log("Move has been completed");
             GameGUI.resetGUIBool();
             checkTurnManager();
-            //GameTurn.finishTurn();
 
         }
     }
@@ -435,25 +431,28 @@ public class MoveParent : MonoBehaviour
 
      public void performAttackOn(GameObject target)
     { 
+        attacking = true;
+        int realDMG = calculateDMG(attack);
         playSwordStrikeSound();
+
         Vector3 temp = target.transform.position;
         CalculateHeading(temp);
         transform.forward = heading;
-        attacking = true;
-        GetComponentInChildren<TroopAnimation>().checkAttack();
-        Debug.Log("attacking: " + attacking);
 
-        target.GetComponent<MoveParent>().health -= attack;
-        Debug.Log(this + " has dealt " + attack + " DMG to " + target);
+        GetComponentInChildren<TroopAnimation>().attackAnimation();
+        target.GetComponent<MoveParent>().health -= realDMG;
+        Debug.Log(this + " has dealt " + realDMG + " DMG to " + target);
         target.GetComponentInChildren<HealthScript>().setHealth(target.GetComponent<MoveParent>().health);
         if(target.GetComponent<MoveParent>().health <= 0)
         {
             target.GetComponent<MoveParent>().isDead = true;
+           if(target.tag == "Enemy"){GameTurn.enemyCount -= 1;}
+           if(target.tag == "Troop"){GameTurn.troopCount -= 1;}
             Destroy(target.gameObject);
             Debug.Log(target + " has been defeated");
         }
         attacking = false;
-        Debug.Log("attacking: " + attacking);
+
         GameTurn.finishTurn();
         GameTurn.checkVictory();
     }
@@ -461,44 +460,28 @@ public class MoveParent : MonoBehaviour
     //Check if the turn should be finished
     public void checkTurnManager()
     {
-        //Debug.Log("Troop Status: " + this);
-        //Debug.Log("Checking turn manager...");
-        //Debug.Log("has attacked: " + this.hasAttacked);
-        //Debug.Log("has moved: " + this.hasMoved);
         if(this.tag == "Enemy")
         {
             hasMoved = false;
             hasAttacked = false;
             GetComponent<MoveEnemy>().FindAttackTilesEnemy();
-            //GameTurn.finishTurn();
         }
         if(this.tag == "Troop" && hasMoved)
         {
-            //hasMoved = false;
             hasAttacked = false;
-            //GameTurn.finishTurn();
         }
     }
 
+    public int calculateDMG(int atk)
+    {
+        System.Random rdm = new System.Random();
+        atk = rdm.Next(1,30);
+        atk += attack;
+        return atk;
+    }
     //Sound functions
     public void playSwordStrikeSound()
     {
-        Debug.Log("Playing sword strike");
         sounds.Play();
-    }
-
-    public void playWalkingSound()
-    {
-       
-    }
-
-    public void playDyingSound()
-    {
-      
-    }
-
-    public void playArrowSound()
-    {
-        
     }
 }
