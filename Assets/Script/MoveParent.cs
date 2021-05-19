@@ -484,8 +484,7 @@ public class MoveParent : MonoBehaviour
     public void playSwordStrikeSound()
     {
         Debug.Log("Playing sword strike");
-        sounds.clip = swordstrike;
-        sounds.PlayOneShot(sounds.clip);
+        sounds.Play();
     }
 
     public void playWalkingSound()
